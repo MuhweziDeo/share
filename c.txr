@@ -1,0 +1,41 @@
+   <View
+          style={{
+            flex: 1,
+            backgroundColor: 'transparent',
+            flexDirection: 'row',
+            padding: 20
+          }}>
+          <TouchableOpacity
+            style={{
+              flex: 0.1,
+              alignSelf: 'flex-end',
+              alignItems: 'center',
+            }}
+            >
+              <View>
+              <View style={{width: 100}}>
+                <Button
+                onPress={() => {
+                  setType(
+                    type === Camera.Constants.Type.back
+                      ? Camera.Constants.Type.front
+                      : Camera.Constants.Type.back
+                  );
+                }}
+                title={type === Camera.Constants.Type.back ? "Front" : "Back"}/>
+              </View>
+
+              <View style={{width: 100}}>
+                <Button
+                title="Capture"/>
+              </View>
+
+              <View style={{width: 100}}>
+                <Button
+                title="Gallery"/>
+              </View>
+
+              </View>
+            
+          </TouchableOpacity>
+        </View>
