@@ -5,10 +5,9 @@ import Camera from './src/Camera';
 console.disableYellowBox = true;
 export default function App() {
   return (
-    // <View style={styles.container}>
-      // <Text>Camera</Text>
+
       <Camera/>
-    // </View>
+
   );
 }
 
@@ -18,5 +17,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.4)'
   },
 });
