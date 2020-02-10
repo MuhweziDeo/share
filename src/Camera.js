@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, TouchableOpacity, Image, Dimensions, Alert, StyleSheet, 
-  TouchableHighlight, Modal, Button, ScrollView } from 'react-native';
+  TouchableHighlight, Modal, Button, ScrollView, Share } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
 import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Sharing from 'expo-sharing';
 
-const buttons = [1,2,4,5,9,0]
+
 export default function Cam() {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -32,13 +33,14 @@ export default function Cam() {
    
   const takePicture = async() => {
     if(cameraRef) {
-      let { uri } = await cameraRef.takePictureAsync();
+      let { uri, base64 } = await cameraRef.takePictureAsync({base64: true});
       const assset = await MediaLibrary.createAssetAsync(uri);
       console.log(assset);
       setImage(assset.uri);
+      const data = `data:image/png;base64,${base64}>`;
       await MediaLibrary.createAlbumAsync("mojo", assset);
       loadImages([...images, assset.uri]);
-      setModalVisible(true);
+      alert("Image Saved")
     }
   }
 
@@ -54,6 +56,14 @@ export default function Cam() {
       setModalVisible(true);
     }
   }
+
+  const onShare = async () => {
+    try {
+      await Sharing.shareAsync(images[0]);
+    } catch (error) {
+      alert("Unable to share images");
+    }
+  };
 
   // if (hasPermission === null) {
   //   return <View />;
@@ -213,7 +223,7 @@ export default function Cam() {
                 }
                 )}
                 <View style={{flexDirection: "row", justifyContent: "space-between", color: "red"}}>
-                <Button title="Share"/>
+                <Button onPress={() => onShare()} title="Share"/>
                 <Button color="black" onPress={() => {
                       setModalVisible(!modalVisible);
                     }} title="Cancel"/>
